@@ -8,14 +8,25 @@ satellite = by_name[name]
 
 ts = load.timescale()
 lines = open('epochs.txt', 'r').readlines()
-file = open('positions.txt', 'a')
+first_line = lines[0]
+positions_file = open('positions.txt', 'a')
+    
+latest_timestamp_file = open('last_timestamp', 'r')
+latest_timestamp = latest_timestamp_file.readline()
+latest_timestamp_file.close()
 
-for line in lines:
-    time = line.split(' ')
+i = 0
+while lines[i] != latest_timestamp:
+    i += 1
+    time = lines[i].split(' ')
     year, month, day = [int(x) for x in time[0].split('-')]
     hour, minute, second = [int(x) for x in time[1].split(':')]
     time = ts.tt(year, month, day, hour, minute, second)
     pos, vel = satellite.at(time).position.km, satellite.at(time).velocity.km_per_s
-    file.write(''.join((str(pos), str(vel))) + '\n')
+    x, y, z = pos
+    positions_file.write(''.join((str(pos), str(vel))) + '\n')
 
-file.close()
+latest_timestamp_file = open('last_timestamp', 'w')
+latest_timestamp_file.write(first_line)
+
+positions_file.close()
