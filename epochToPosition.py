@@ -1,4 +1,6 @@
-from skyfield.api import load, wgs84
+from skyfield.api import load
+from datetime import datetime
+
 
 name = 'VIGORIDE 6'
 stations_url = 'https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=tle'
@@ -16,10 +18,15 @@ latest_timestamp_file = open('latest_timestamp.txt', 'r')
 latest_timestamp = latest_timestamp_file.readline()
 latest_timestamp_file.close()
 
+def find_closest_tle(timestamp):
+    date, time, _ = timestamp.split(' ')
+    year, month, day = [int(x) for x in date.split('-')]
+    hour, minute, second = [int(x) for x in time.split(':')]
+    date_time = 
+
 i = n
 while lines[i] != latest_timestamp:
     i -= 1
-    line = lines[i]
     time = lines[i].split(' ')
     year, month, day = [int(x) for x in time[0].split('-')]
     hour, minute, second = [int(x) for x in time[1].split(':')]
